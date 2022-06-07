@@ -16,5 +16,32 @@ module.exports = {
   ],
   rules: {
     'no-console': 'off',
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
+  },
+  overrides: [
+    {
+      files: [
+        '***/*.test.ts',
+      ],
+      env: {
+        jest: true,
+      },
+    },
+  ],
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.ts'],
+      },
+    },
   },
 };
