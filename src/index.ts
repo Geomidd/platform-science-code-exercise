@@ -25,11 +25,22 @@ export const getConsonantCount = (input: string): number => {
   return consonantMatches?.length ?? 0;
 };
 
-/* eslint-disable-next-line no-unused-vars */
-export const hasSimilarities = (_destination: string, _driver: string): boolean => {
-  // TODO: Implement logic
-  const containsSimilarities = false;
-  return containsSimilarities;
+/** Euclid's greatest common divisor algorithm, could be done recursively */
+export const greatestCommonDivisor = (a: number, b: number): number => {
+  let first = a;
+  let second = b;
+  let remainder: number;
+  while ((first % second) > 0) {
+    remainder = first % second;
+    first = second;
+    second = remainder;
+  }
+  return second;
+};
+
+export const isCoprime = (a: number, b: number): boolean => {
+  const commonDivisor = greatestCommonDivisor(a, b);
+  return commonDivisor === 1;
 };
 
 export const applyScoring = (destination: string, driver: string): number => {
@@ -42,9 +53,9 @@ export const applyScoring = (destination: string, driver: string): number => {
     baseScore = getConsonantCount(driver) * CASE_2_MULTIPLIER;
   }
 
-  const finalScore = hasSimilarities(destination, driver)
-    ? baseScore * CASE_3_MULTIPLIER
-    : baseScore;
+  const finalScore = isCoprime(destination.length, driver.length)
+    ? baseScore
+    : baseScore * CASE_3_MULTIPLIER;
 
   return finalScore;
 };
