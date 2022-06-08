@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 
 const FILE_ENTRY_SEPARATOR = '\n';
 const CASE_1_MULTIPLIER = 1.5;
@@ -184,5 +184,38 @@ export const generateReport = (destinations: string[], drivers: string[]): Routi
 };
 
 if (require.main === module) {
-  console.log('Running this directly');
+  if(process.argv.length < 4 || process.argv.length > 5) {
+    console.error('Invalid number of parameters sent, there should be two file paths included');
+    process.exit(9);
+  }
+
+  // This could be improved via an argument parser library
+  const destinationsFilename = process.argv[2];
+  const driversFilename = process.argv[3];
+  const saveFile = process.argv.length === 5 ? process.argv[4] : null;
+
+  const destinations = parseFile(destinationsFilename);
+  const drivers = parseFile(driversFilename);
+  if(destinations === false || drivers === false) {
+    console.error('Could not open one of the files, please try again');
+    process.exit(1);
+  }
+
+  const report = generateReport(destinations, drivers);
+
+  if(saveFile !== null) {
+    try {
+      writeFileSync(saveFile, JSON.stringify(report, null, 2));
+      console.log(`Saved report to ${saveFile}`);
+    }
+    catch (err) {
+      console.error('Could not save report!')
+      console.log('Routing Report');
+      console.log(JSON.stringify(report, null, 2));
+    }
+  } else {
+    console.log('Routing Report');
+    console.log(JSON.stringify(report, null, 2));
+  }
+  
 }
