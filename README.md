@@ -4,7 +4,16 @@
 
 ### Run
 
+1. `npm install`
+1. `npm run build`
+1. `npm run start {destinationsFile} {driversFile} [{optionalSaveFile}]`
+   1. The paths can be absolute or relative to the current directory.
+   1. The command has an optional 3rd parameter for a save file name. If not provided (or file fails to save), results will be printed to the console.
+
 ### Test
+
+1. `npm install`
+1. `npm run test`
 
 ## Description
 Our sales team has just struck a deal with Acme Inc to become the exclusive provider for routing their product shipments via 3rd party trucking fleets. The catch is that we can only route one shipment to one driver per day.
@@ -21,21 +30,19 @@ The top-secret algorithm is:
 
 ### Inputs
 
-CLI with two files with newline separated lists (guaranteed to not be malformed but not case consistent)
+CLI with two (or three) files with newline separated lists (guaranteed to not be malformed but not case consistent)
 1. Street addresses of shipment destinations
 1. Names of drivers
+1. [Optional] Save file
 
 ### Outputs
 
-JSON file named `output/routing-YYYYMMDD.json` with format 
+If no save file name is provided, JSON will be printed to the console. Otherwise, a JSON file with the given name will be provided. 
 ```
 {
-  "totalSustainabilityScore": 0,
-  "routings": [
-    {
-      "driver": "Driver Name",
-      "destination": "123 Main Street"
-    }
-  ]
+  "suitabilityScore": 0,
+  "assignments": {
+    "Driver Name": "123 Main St"
+  }
 }
 ```
