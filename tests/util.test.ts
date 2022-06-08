@@ -1,5 +1,5 @@
 import {
-  applyScoring, getConsonantCount, getVowelCount, greatestCommonDivisor, isCoprime,
+  applyScoring, generateReport, getConsonantCount, getVowelCount, greatestCommonDivisor, isCoprime, parseDrivers,
 } from '../src/index';
 
 describe('Util functions', () => {
@@ -116,12 +116,15 @@ describe('Util functions', () => {
   });
 
   describe('Scoring', () => {
+    const drivers = parseDrivers(['Bob Ross']);
+    const driver = drivers[0];
     it('should return a score of 5 for `123 Main St`, `Bob Ross`', () => {
       // 123 Main St = 11 = odd
       // Bob Ross = 5 consonants * 1
       // gcd(11, 8) = 1, no base score multiplier
       // Score = 5
-      const score = applyScoring('123 Main St', 'Bob Ross');
+
+      const score = applyScoring('123 Main St', driver);
       expect(score).toEqual(5);
     });
 
@@ -130,8 +133,17 @@ describe('Util functions', () => {
       // Bob Ross = 2 vowels * 1.5
       // gcd(12, 8) = 4, baseScore * 1.5
       // Score = 3
-      const score = applyScoring('1234 Main St', 'Bob Ross');
+      const score = applyScoring('1234 Main St', driver);
       expect(score).toEqual(4.5);
     });
+  });
+});
+
+describe('Integration', () => {
+  it('should have the expected suitability score', () => {
+    const destinations = ['123 Main St', '1234 Main St', '4242 Everything Drive'];
+    const drivers = ['Bobby Tables', 'Rosa Murgatroyd', 'Jeffry Ferrero'];
+    const report = generateReport(destinations, drivers);
+    expect(report.suitabilityScore).toEqual(29.25); // 32.25 is best score manually calculated current system is 29.25
   });
 });

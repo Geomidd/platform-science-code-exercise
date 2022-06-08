@@ -16,6 +16,8 @@ module.exports = {
   ],
   rules: {
     'no-console': 'off',
+    'max-len': ['warn', { code: 120 }],
+    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     'import/extensions': [
       'error',
       'ignorePackages',
