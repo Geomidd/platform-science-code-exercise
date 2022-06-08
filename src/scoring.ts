@@ -28,7 +28,7 @@ export const calculateScoresForDestination = (destination: string, drivers: Driv
     return accumulator;
   }, []);
 
-  // Sort in descending order ([0] is highest score)
+  // Sort in descending order (i.e. driverScores[0] is highest score)
   driverScores.sort((a: DriverScore, b: DriverScore): -1|0|1 => {
     if (a[1] > b[1]) return -1;
     if (a[1] < b[1]) return 1;

@@ -11,6 +11,7 @@ export const greatestCommonDivisor = (a: number, b: number): number => {
   return second;
 };
 
+/** Determines if numbers only have 1 as a common factor */
 export const isCoprime = (a: number, b: number): boolean => {
   const commonDivisor = greatestCommonDivisor(a, b);
   return commonDivisor === 1;

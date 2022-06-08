@@ -7,6 +7,7 @@ export const matchDestinationsToDrivers = (allScores: DestinationScores): Record
   const driverAssignments: Record<string, [string, number]> = {};
 
   // This uses a greedy approach based on driver score at the high end, it doesn't account for overall score
+  //  This would be the primary item to improve as it is the core feature, maybe via dynamic programming
   while (queue.length > 0) {
     const destinationToCheck = queue.shift();
     if (destinationToCheck !== undefined) {
@@ -14,10 +15,10 @@ export const matchDestinationsToDrivers = (allScores: DestinationScores): Record
         const driverName: string = allScores[destinationToCheck][i][0].name;
         const ourScore = allScores[destinationToCheck][i][1];
 
-        // If driver assigned already, check score against existing score
+        // If driver assigned already, check current destination score against existing score
         if (driverName in driverAssignments) {
           const existingScore = driverAssignments[driverName][1];
-          // If our score is better than existing, assign and enqueue
+          // If our score is better than existing, assign and re-enqueue the existing destination
           if (ourScore > existingScore) {
             queue.push(driverAssignments[driverName][0]);
             driverAssignments[driverName] = [destinationToCheck, ourScore];
@@ -34,6 +35,7 @@ export const matchDestinationsToDrivers = (allScores: DestinationScores): Record
   return driverAssignments;
 };
 
+/** Rather than calculating consonants and vowels whenever used, calculate once and store in a struct */
 export const parseDrivers = (driverInput: string[]): Driver[] => {
   const drivers = driverInput.map((driver): Driver => ({
     name: driver,
