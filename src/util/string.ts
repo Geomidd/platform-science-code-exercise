@@ -5,7 +5,8 @@ export const getVowelCount = (input: string): number => {
 };
 
 export const getConsonantCount = (input: string): number => {
-  // Regex counts all characters that are not a vowel or space, should expand to account for punctuation and unicode as well
+  // Regex counts all characters that are not a vowel or space, should expand to account for punctuation
+  //  and unicode as well
   const consonantMatches = input.match(/[^aeiou ]/gi);
   return consonantMatches?.length ?? 0;
 };

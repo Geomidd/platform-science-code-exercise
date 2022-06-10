@@ -1,4 +1,4 @@
-import { DestinationScores, Driver, DriverScore } from './types';
+import { Driver } from './types';
 import { isCoprime } from './util/math';
 
 const CASE_1_MULTIPLIER = 1.5;
@@ -22,27 +22,21 @@ export const calculateScore = (destination: string, driver: Driver): number => {
   return finalScore;
 };
 
-export const calculateScoresForDestination = (destination: string, drivers: Driver[]): DriverScore[] => {
-  const driverScores = drivers.reduce((accumulator: DriverScore[], driver: Driver): DriverScore[] => {
-    accumulator.push([driver, calculateScore(destination, driver)]);
+export const calculateScoresForDestination = (destination: string, drivers: Driver[]): number[] => {
+  const driverScores = drivers.reduce((accumulator: number[], driver: Driver): number[] => {
+    accumulator.push(calculateScore(destination, driver));
     return accumulator;
   }, []);
 
-  // Sort in descending order (i.e. driverScores[0] is highest score)
-  driverScores.sort((a: DriverScore, b: DriverScore): -1|0|1 => {
-    if (a[1] > b[1]) return -1;
-    if (a[1] < b[1]) return 1;
-    return 0;
-  });
   return driverScores;
 };
 
-export const calculateAllScores = (destinations: string[], drivers: Driver[]): DestinationScores => {
+export const calculateAllScores = (destinations: string[], drivers: Driver[]): number[][] => {
   /* eslint-disable no-param-reassign */
-  const scoreRecords = destinations.reduce((scores: DestinationScores, destination: string): DestinationScores => {
-    scores[destination] = calculateScoresForDestination(destination, drivers);
+  const scoreRecords = destinations.reduce((scores: number[][], destination: string): number[][] => {
+    scores.push(calculateScoresForDestination(destination, drivers));
     return scores;
-  }, {});
+  }, []);
   /* eslint-enable no-param-reassign */
   return scoreRecords;
 };
