@@ -6,16 +6,16 @@ import { getConsonantCount, getVowelCount } from './util/string';
 
 /* eslint-disable-next-line max-len */
 export const matchDestinationsToDrivers = (destinations: string[], drivers: string[], allScores: number[][]): ScoreMapping => {
-  const driverPermutations = [...permutations(drivers.keys(), destinations.length)];
+  const driverPermutations = [...permutations(drivers.keys(), Math.min(destinations.length, drivers.length))];
   const possibleResults: ScoreMapping[] = [];
 
   driverPermutations.forEach((permutation) => {
     const groupings: Record<string, string> = {};
     /* eslint-disable no-param-reassign */
     const score = destinations.reduce((currentScore: number, dest: string, idx: number) => {
-      currentScore += allScores[permutation[idx]][idx];
-      // groupings[dest] = drivers[permutation[idx]];
-      groupings[drivers[permutation[idx]]] = dest;
+      currentScore += allScores[idx][permutation[idx]] ?? 0;
+      const driverName = drivers[permutation[idx]] === undefined ? 'Unassigned' : drivers[permutation[idx]];
+      groupings[driverName] = dest;
       return currentScore;
     }, 0);
       /* eslint-enable no-param-reassign */
